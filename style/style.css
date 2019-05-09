@@ -1,0 +1,16 @@
+.mapboxgl-map {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+body{
+    font: normal .80em 'trebuchet ms', arial, sans-serif;
+    color: #000;
+    margin: 0px;
+}
+
+.link1 {
+    display: block;
+    text-align: left;
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Site Navigation Map</title>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" type="text/css" href="style/style.css" title="style" />
+
+</head>
+
+<body>
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js' charset='utf-8'></script>
+    <div id='map'></div>
+    <script>
+        //public token, change this to put it in production
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2d3ZWJiMTgiLCJhIjoiY2psd3FhMTMwMDFjNjN2b3Zmd3JyMWV2ZSJ9.r8XM2Wrgj6kueUh3Jdo3iw';
+        
+        var link_dict = {'United States of America': {
+            'Boston 1868' : 'https://stories.folger.edu/macbeth-in-global-performance/1868-nur-eine-nacht-boston-usa/',
+            '1930\'s America' : 'https://stories.folger.edu/macbeth-in-global-performance/1930s-american-federal-negro-theater-unit/',
+            'New York City, 1948' : 'https://stories.folger.edu/macbeth-in-global-performance/1948-orson-welles-in-new-york-city/'
+            },
+        'United Kingdom' : {
+            'London, 1878-1905' : 'https://stories.folger.edu/macbeth-in-global-performance/1878-1905-lyceum-theatre-london-uk/',                                
+            },
+        'Australia' : {
+            'Australia, 1920-1930' : 'https://stories.folger.edu/macbeth-in-global-performance/1920-1930-australian-allan-wilkie-company/',
+            'Australia, 1990' : 'https://stories.folger.edu/macbeth-in-global-performance/1990-australia-bell-shakespeare-company/'
+            }
+        };
+        
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-11.074218750131706, 19.72534224840375], 
+            zoom: 2,
+            interactive: false
+        });
+
+        
+        map.on('load', function() {
+            
+            map.addSource('countries', {
+                "type": "geojson",
+                "data": './countries.geojson'
+            });
+
+            map.addLayer({
+                "id": "countries",
+                "source": "countries",
+                "type": "fill",
+                'paint': {
+                    'fill-color': '#088',
+                    'fill-opacity': 0.8
+                }
+            });
+            
+            map.on('click', 'countries', function (e) {
+                console.log(e.features[0].properties.SOVEREIGNT);
+                var r_d = link_dict[e.features[0].properties.SOVEREIGNT];
+                var ul_s = '<div class=""popup>';
+                for (var p in r_d){
+                    var s = '<a class="link1" href='+ r_d[p] + '>' + p + '</a>'
+                    ul_s = ul_s + s;
+                }
+                ul_s = ul_s + '</div>';
+                console.log(ul_s);
+                new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(ul_s)
+                .addTo(map);
+            });
+        });
+            
+    </script>
+
+</body>
+
+</html>
