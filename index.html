@@ -33,11 +33,20 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
             center: [-11.074218750131706, 19.72534224840375], 
-            zoom: 0.75
+            zoom: 1,
+            interactive: false
         });
 
         
         map.on('load', function() {
+            
+            map.fitBounds([[
+                -139.64524949247115,
+                -57.42572830249499
+            ], [
+                152.42371316687075,
+                77.6873780070257 
+                ]]);
             
             map.addSource('countries', {
                 "type": "geojson",
@@ -54,13 +63,21 @@
                 }
             });
             
+            
+//            map.on('click', function (e) {
+//               var latitude = e.lngLat.lat;
+//                var longitude = e.lngLat.lng;
+//                console.log(latitude + " - " + longitude); 
+//            });
+//            
             map.on('click', 'countries', function (e) {
-                console.log(e.features[0].properties.SOVEREIGNT);
                 var r_d = link_dict[e.features[0].properties.SOVEREIGNT];
                 var ul_s = '<div class=""popup>';
+                var c = 0;
                 for (var p in r_d){
                     var s = '<a class="link1" target="_blank" href='+ r_d[p] + '>' + p + '</a>'
                     ul_s = ul_s + s;
+                    c += 1;
                 }
                 ul_s = ul_s + '</div>';
                 new mapboxgl.Popup()

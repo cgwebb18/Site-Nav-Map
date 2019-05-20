@@ -14,3 +14,13 @@ body{
     display: block;
     text-align: left;
 }
+
+a.link1 {
+    border-top: 1px dashed black;
+    padding-top: 5px;
+}
+
+a.link1:first-child {
+    border-top: none;
+    padding-bottom: 5px;
+}
